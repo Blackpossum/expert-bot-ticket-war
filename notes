@@ -1,0 +1,271 @@
+1. testing dengan kode membership 
+( saat ini terimplementasi, namun belum ditest lebih lanjut)
+2. membuat auto select pada TARGET_CATEGORY ticket, jika semisal
+pada TARGET_CATEGORY pertama habis, maka akan memilih yang kedua,
+jika kedua habis maka akan memilih otomatis ketiga, begitu seterusnya.
+3. untuk saat ini udha bisa memilih sampe checkout VA
+
+
+-------- LOBBY WAITING ENTRY -----------------------
+<div id="content">
+                    <div id="header">
+    <div id="logocontainer" class="logo" data-bind="visible: layout.logoVisible">
+        <img src="//assets-ap-northeast-1.queue-it.net/tiket/userdata/DemoTheme/assets/logo_tiket_2x.png" id="imgCustomerLogo" alt="2026-27 BABYMONSTER WORLD TOUR [CHOOM] IN JAKARTA - MONSTIEZ MEMBERSHIP Presale" longdesc="company logo for PT. Global Tiket Network" data-bind="attr: { src: texts.logoSrc }">
+    </div>
+    <h1 id="headertext">
+        <span id="lbHeaderH2" data-bind="html: texts.header">You’re in line!</span>
+    </h1>
+    <div id="headerparagraph">
+        <span id="lbHeaderP" data-bind="html: texts.body">When it's your turn, your screen will be refreshed automatically, and you may begin to book the tickets.<br><br>
+You'll have <b>10 minutes</b> to select your tickets and complete the order form. So, get your ID (NIK or passport number) ready to speed up the booking process.</span>
+    </div>
+    <div id="whatisthis">
+        <a id="hlThisIsQueueIt" aria-label="What is this? Learn what a waiting room is and how it works. Opens in a new tab." href="https://queue-it.com/what-is-this.html?customerId=tiket&amp;eventId=bmweverse2026&amp;queueId=5fee2112-681b-4aec-8c51-62e207179ec5&amp;language=en-US" target="_blank" data-bind="attr: { href: texts.whatIsThisUrl }" rel="noopener noreferrer">What is this?</a>
+    </div>
+</div>
+                    <div id="divConfirmRedirectModal" role="dialog" aria-labelledby="pConfirmRedirect" class="modal queueElement" data-bind="visible: showConfirmRedirectDialog()" style="display: none">
+    <div id="divConfirmRedirectModal_Content" class="modal-content">
+        <div class="modal-body">
+            <p id="h2ConfirmRedirect">Your turn started at</p>
+            <p id="pConfirmRedirectTime" data-bind="{visible:ticket.windowStartTime()}" style="display: none;">
+                <span data-bind="{text:ticket.windowStartTime()}"></span>
+                <span data-bind="{text:ticket.timeZonePostfix()}"></span>
+            </p>
+            <p id="pConfirmRedirect">Please confirm so we can get you to the site right away.</p>
+            <button id="buttonConfirmRedirect" type="button" class="btn" data-bind="click: setActiveClient"><span class="l">Yes, please</span><span class="r">&nbsp;</span></button>
+        </div>
+    </div>
+</div>
+
+                    
+                    
+                    <div class="warning-box">
+
+    <p class="beforeElement">
+        <span id="MainPart_lbEventStartsAtText">The event will begin at:</span>
+        <span id="MainPart_lbEventStartTime" data-bind="text: ticket.eventStartTimeFormatted">12:00 PM</span>
+        <span id="MainPart_lbEventStartTimeTimeZonePostfix" data-bind="text: ticket.timeZonePostfix"></span>
+    </p>
+
+
+    <div id="CustomQueueSection"><div id="CustomQueueSection_NumberOfPeopleAhead" class="custom-people-ahead"><span>121</span><div>people are in front of you</div></div></div><div id="MainPart_divProgressbar" aria-label="Progress bar" class="progressbar queueElement" data-bind="visible: layout.progressVisible, attr: { 'aria-valuenow':Math.round(ticket.progress() * 100) } " aria-valuemin="0" aria-valuemax="100" role="progressbar" aria-valuenow="100">
+        <div id="MainPart_divProgressbar_Progress" class="progress updated" style="width: 100%;">
+            <div id="MainPart_divProgressbar_Progress_Runner" class="runner" data-bind="css: { paused: layout.queueIsPausedVisible }"></div>
+        </div>
+        <div id="MainPart_divProgressbar_Clear" class="clear"></div>
+    </div>
+</div>
+<div id="MainPart_lbManualUpdateWarning" style="display: none" class="alert alert-error" data-bind="visible: !isRunning()">Lost internet connection. Please check your Wi-Fi, data package, or cellular service.</div>
+<div id="MainPart_divProgressbarBox" data-bind="visible: isRunning()" class="processbar-box">
+    <div id="MainPart_divProgressbarBox_Holder" class="holder">
+        <!-- before/idle -->
+        <div id="defaultCountdown" class="beforeElement"></div>
+        <p class="larger beforeElement">
+            </p><div id="MainPart_divUsersInQueueCount" style="display: none;" data-bind="visible: layout.usersInQueueVisible">
+                <span id="MainPart_lbUsersInQueueCountText">Total number of users in line:</span>
+                <span id="MainPart_lbUsersInQueueCount" data-bind="text: ticket.usersInQueue">0</span>
+            </div>
+        <p></p>
+
+        <!-- queue -->
+        <p id="MainPart_pProgressbarBox_Holder_Larger" class="larger queueElement">
+                <span id="MainPart_lbQueueNumberContainer" data-bind="visible: layout.queueNumberVisible">
+                    <span id="MainPart_lbQueueNumberText">Your number in line:</span>
+                    <span id="MainPart_lbQueueNumber" data-bind="text: ticket.queueNumber">83942</span>
+                    <br id="MainPart_lbQueueNumberLineBreak">
+                </span>
+            <span id="MainPart_lbUsersInLineAheadOfYouText" data-bind="visible: layout.usersInLineAheadOfYouVisible">Number of users in line ahead of you:</span>
+            <span id="MainPart_lbUsersInLineAheadOfYou" data-bind="visible: layout.usersInLineAheadOfYouVisible, text: ticket.usersInLineAheadOfYou">121</span>
+            <span id="first-in-line" style="display: none;" data-bind="visible: layout.firstInLineVisible">It is your turn</span>
+            <br id="MainPart_lbUsersInLineAheadOfYouLineBreak" data-bind="visible: layout.usersInLineAheadOfYouVisible() || layout.firstInLineVisible()">
+            <span id="MainPart_lbExpectedServiceTimeText" data-bind="visible: layout.expectedServiceTimeVisible">Expected arrival time on the website: </span>
+            <span id="MainPart_lbExpectedServiceTime" data-bind="visible: layout.expectedServiceTimeVisible, text: ticket.expectedServiceTime">12:40 PM</span>
+            <span id="MainPart_lbExpectedServiceTimeTimeZonePostfix" data-bind="visible: layout.expectedServiceTimeVisible, text: ticket.timeZonePostfix"></span>
+            <span id="queue-paused" style="display: none;" data-bind="visible: layout.queueIsPausedVisible" aria-live="polite" role="status">The line is paused.</span>
+            <br id="MainPart_lbExpectedServiceTimeLineBreak" data-bind="visible: layout.expectedServiceTimeVisible() || layout.queueIsPausedVisible()">
+            <span id="serviced-soon" style="display: none;" data-bind="visible: layout.servicedSoonVisible()">
+                <span data-bind="visible: !layout.servicedSoonDelayVisible()" aria-live="polite" aria-role="status">Thank you for waiting. You are now being redirected to the website.</span>
+                <span data-bind="visible: layout.servicedSoonDelayVisible()" aria-live="polite" aria-role="status" style="display: none;">You're almost there. You will be redirected to the website as soon as possible.</span>
+            </span>
+            <span id="MainPart_lbWhichIsInText" style="display: none;" data-bind="visible: layout.whichIsInVisible">Your estimated wait time is:</span>
+            <span id="MainPart_lbWhichIsIn" style="display: none;" data-bind="visible: layout.whichIsInVisible, text: ticket.whichIsIn"></span>
+        </p>
+        <div id="MainPart_ulProgressbarBox_Holder_Processbar" class="processbar">
+            <div id="defaultViewPb1" class="active"><span>&nbsp;</span></div>
+        </div>
+        <div id="MainPart_divProgressbarBox_Holder_LastUpdateTime" data-bind="visible: isRunning">
+            <span id="MainPart_lbLastUpdateTime" title="Everything is fine, as long the 'Status last updated' time is updated regularly.">Status last updated on </span>
+            <span id="MainPart_lbLastUpdateTimeText" data-bind="text: ticket.lastUpdated">12:40:15 PM</span>
+            <span id="MainPart_lbLastUpdateTimeTextTimeZonePostfix" data-bind="text: ticket.timeZonePostfix"></span>
+        </div>
+    </div>
+</div>
+<div id="MainPart_divBlock" class="block beforeElement">
+    <p></p>
+</div>
+                    <div id="MainPart_divTimeBox" class="time-box" style="display: none;" data-bind="visible: layout.dynamicMessageVisible() &amp;&amp; message()">
+    <div id="MainPart_divTimeBox_Holder" class="holder">
+        <div id="MainPart_divTimeBox_Holder_Frame" class="frame">
+            <h2>
+                <!-- ko if: message --><!-- /ko -->
+            </h2>
+            <!-- ko if: message --><!-- /ko -->
+        </div>
+    </div>
+</div>
+                        <div id="MainPart_frmReminder2" name="Notify me" class="reminder-form queueElement" style="display: none;" data-bind="visible: layout.shouldShowReminder()">
+        <h2><span id="MainPart_lbNotyfyMeText">Please notify me when it is my turn:</span></h2>
+        <div id="MainPart_divEmailInput" class="row" style="display: none;" data-bind="visible: layout.reminderEmailVisible()">
+            <form id="MainPart_FormEmailInput" name="Email notification form">
+                <label id="MainPart_lblEmailAddress" for="MainPart_inpEmailAddress">Enter email address</label>
+                <input type="email" id="MainPart_inpEmailAddress" name="notificationEmailAddress" title="Enter email address" class="item-input" placeholder="example@email.com" data-bind="value: emailAddress" autocomplete="on" aria-labelledby="MainPart_lblEmailAddress">
+                <button type="submit" class="btn" id="aUpdateEmail" data-bind="click: updateNotify"><span class="l">Notify me by e-mail</span><span class="r">&nbsp;</span></button>
+            </form>
+            <div id="divEmailStatusFrame">
+                <div id="divEmailStatus" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+                </div>
+
+
+
+----------------- CATEGORY -----------------------
+<div id="content">
+                    <div id="header">
+    <div id="logocontainer" class="logo" data-bind="visible: layout.logoVisible">
+        <img src="//assets-ap-northeast-1.queue-it.net/tiket/userdata/DemoTheme/assets/logo_tiket_2x.png" id="imgCustomerLogo" alt="2026-27 BABYMONSTER WORLD TOUR [CHOOM] IN JAKARTA - MONSTIEZ MEMBERSHIP Presale" longdesc="company logo for PT. Global Tiket Network" data-bind="attr: { src: texts.logoSrc }">
+    </div>
+    <h1 id="headertext">
+        <span id="lbHeaderH2" data-bind="html: texts.header">You’re in line!</span>
+    </h1>
+    <div id="headerparagraph">
+        <span id="lbHeaderP" data-bind="html: texts.body">When it's your turn, your screen will be refreshed automatically, and you may begin to book the tickets.<br><br>
+You'll have <b>10 minutes</b> to select your tickets and complete the order form. So, get your ID (NIK or passport number) ready to speed up the booking process.</span>
+    </div>
+    <div id="whatisthis">
+        <a id="hlThisIsQueueIt" aria-label="What is this? Learn what a waiting room is and how it works. Opens in a new tab." href="https://queue-it.com/what-is-this.html?customerId=tiket&amp;eventId=bmweverse2026&amp;queueId=5fee2112-681b-4aec-8c51-62e207179ec5&amp;language=en-US" target="_blank" data-bind="attr: { href: texts.whatIsThisUrl }" rel="noopener noreferrer">What is this?</a>
+    </div>
+</div>
+                    <div id="divConfirmRedirectModal" role="dialog" aria-labelledby="pConfirmRedirect" class="modal queueElement" data-bind="visible: showConfirmRedirectDialog()" style="display: none">
+    <div id="divConfirmRedirectModal_Content" class="modal-content">
+        <div class="modal-body">
+            <p id="h2ConfirmRedirect">Your turn started at</p>
+            <p id="pConfirmRedirectTime" data-bind="{visible:ticket.windowStartTime()}" style="display: none;">
+                <span data-bind="{text:ticket.windowStartTime()}"></span>
+                <span data-bind="{text:ticket.timeZonePostfix()}"></span>
+            </p>
+            <p id="pConfirmRedirect">Please confirm so we can get you to the site right away.</p>
+            <button id="buttonConfirmRedirect" type="button" class="btn" data-bind="click: setActiveClient"><span class="l">Yes, please</span><span class="r">&nbsp;</span></button>
+        </div>
+    </div>
+</div>
+
+                    
+                    
+                    <div class="warning-box">
+
+    <p class="beforeElement">
+        <span id="MainPart_lbEventStartsAtText">The event will begin at:</span>
+        <span id="MainPart_lbEventStartTime" data-bind="text: ticket.eventStartTimeFormatted">12:00 PM</span>
+        <span id="MainPart_lbEventStartTimeTimeZonePostfix" data-bind="text: ticket.timeZonePostfix"></span>
+    </p>
+
+
+    <div id="CustomQueueSection"><div id="CustomQueueSection_NumberOfPeopleAhead" class="custom-people-ahead"><span>121</span><div>people are in front of you</div></div></div><div id="MainPart_divProgressbar" aria-label="Progress bar" class="progressbar queueElement" data-bind="visible: layout.progressVisible, attr: { 'aria-valuenow':Math.round(ticket.progress() * 100) } " aria-valuemin="0" aria-valuemax="100" role="progressbar" aria-valuenow="100">
+        <div id="MainPart_divProgressbar_Progress" class="progress updated" style="width: 100%;">
+            <div id="MainPart_divProgressbar_Progress_Runner" class="runner" data-bind="css: { paused: layout.queueIsPausedVisible }"></div>
+        </div>
+        <div id="MainPart_divProgressbar_Clear" class="clear"></div>
+    </div>
+</div>
+<div id="MainPart_lbManualUpdateWarning" style="display: none" class="alert alert-error" data-bind="visible: !isRunning()">Lost internet connection. Please check your Wi-Fi, data package, or cellular service.</div>
+<div id="MainPart_divProgressbarBox" data-bind="visible: isRunning()" class="processbar-box">
+    <div id="MainPart_divProgressbarBox_Holder" class="holder">
+        <!-- before/idle -->
+        <div id="defaultCountdown" class="beforeElement"></div>
+        <p class="larger beforeElement">
+            </p><div id="MainPart_divUsersInQueueCount" style="display: none;" data-bind="visible: layout.usersInQueueVisible">
+                <span id="MainPart_lbUsersInQueueCountText">Total number of users in line:</span>
+                <span id="MainPart_lbUsersInQueueCount" data-bind="text: ticket.usersInQueue">0</span>
+            </div>
+        <p></p>
+
+        <!-- queue -->
+        <p id="MainPart_pProgressbarBox_Holder_Larger" class="larger queueElement">
+                <span id="MainPart_lbQueueNumberContainer" data-bind="visible: layout.queueNumberVisible">
+                    <span id="MainPart_lbQueueNumberText">Your number in line:</span>
+                    <span id="MainPart_lbQueueNumber" data-bind="text: ticket.queueNumber">83942</span>
+                    <br id="MainPart_lbQueueNumberLineBreak">
+                </span>
+            <span id="MainPart_lbUsersInLineAheadOfYouText" data-bind="visible: layout.usersInLineAheadOfYouVisible">Number of users in line ahead of you:</span>
+            <span id="MainPart_lbUsersInLineAheadOfYou" data-bind="visible: layout.usersInLineAheadOfYouVisible, text: ticket.usersInLineAheadOfYou">121</span>
+            <span id="first-in-line" style="display: none;" data-bind="visible: layout.firstInLineVisible">It is your turn</span>
+            <br id="MainPart_lbUsersInLineAheadOfYouLineBreak" data-bind="visible: layout.usersInLineAheadOfYouVisible() || layout.firstInLineVisible()">
+            <span id="MainPart_lbExpectedServiceTimeText" data-bind="visible: layout.expectedServiceTimeVisible">Expected arrival time on the website: </span>
+            <span id="MainPart_lbExpectedServiceTime" data-bind="visible: layout.expectedServiceTimeVisible, text: ticket.expectedServiceTime">12:40 PM</span>
+            <span id="MainPart_lbExpectedServiceTimeTimeZonePostfix" data-bind="visible: layout.expectedServiceTimeVisible, text: ticket.timeZonePostfix"></span>
+            <span id="queue-paused" style="display: none;" data-bind="visible: layout.queueIsPausedVisible" aria-live="polite" role="status">The line is paused.</span>
+            <br id="MainPart_lbExpectedServiceTimeLineBreak" data-bind="visible: layout.expectedServiceTimeVisible() || layout.queueIsPausedVisible()">
+            <span id="serviced-soon" style="display: none;" data-bind="visible: layout.servicedSoonVisible()">
+                <span data-bind="visible: !layout.servicedSoonDelayVisible()" aria-live="polite" aria-role="status">Thank you for waiting. You are now being redirected to the website.</span>
+                <span data-bind="visible: layout.servicedSoonDelayVisible()" aria-live="polite" aria-role="status" style="display: none;">You're almost there. You will be redirected to the website as soon as possible.</span>
+            </span>
+            <span id="MainPart_lbWhichIsInText" style="display: none;" data-bind="visible: layout.whichIsInVisible">Your estimated wait time is:</span>
+            <span id="MainPart_lbWhichIsIn" style="display: none;" data-bind="visible: layout.whichIsInVisible, text: ticket.whichIsIn"></span>
+        </p>
+        <div id="MainPart_ulProgressbarBox_Holder_Processbar" class="processbar">
+            <div id="defaultViewPb1" class="active"><span>&nbsp;</span></div>
+        </div>
+        <div id="MainPart_divProgressbarBox_Holder_LastUpdateTime" data-bind="visible: isRunning">
+            <span id="MainPart_lbLastUpdateTime" title="Everything is fine, as long the 'Status last updated' time is updated regularly.">Status last updated on </span>
+            <span id="MainPart_lbLastUpdateTimeText" data-bind="text: ticket.lastUpdated">12:40:15 PM</span>
+            <span id="MainPart_lbLastUpdateTimeTextTimeZonePostfix" data-bind="text: ticket.timeZonePostfix"></span>
+        </div>
+    </div>
+</div>
+<div id="MainPart_divBlock" class="block beforeElement">
+    <p></p>
+</div>
+                    <div id="MainPart_divTimeBox" class="time-box" style="display: none;" data-bind="visible: layout.dynamicMessageVisible() &amp;&amp; message()">
+    <div id="MainPart_divTimeBox_Holder" class="holder">
+        <div id="MainPart_divTimeBox_Holder_Frame" class="frame">
+            <h2>
+                <!-- ko if: message --><!-- /ko -->
+            </h2>
+            <!-- ko if: message --><!-- /ko -->
+        </div>
+    </div>
+</div>
+                        <div id="MainPart_frmReminder2" name="Notify me" class="reminder-form queueElement" style="display: none;" data-bind="visible: layout.shouldShowReminder()">
+        <h2><span id="MainPart_lbNotyfyMeText">Please notify me when it is my turn:</span></h2>
+        <div id="MainPart_divEmailInput" class="row" style="display: none;" data-bind="visible: layout.reminderEmailVisible()">
+            <form id="MainPart_FormEmailInput" name="Email notification form">
+                <label id="MainPart_lblEmailAddress" for="MainPart_inpEmailAddress">Enter email address</label>
+                <input type="email" id="MainPart_inpEmailAddress" name="notificationEmailAddress" title="Enter email address" class="item-input" placeholder="example@email.com" data-bind="value: emailAddress" autocomplete="on" aria-labelledby="MainPart_lblEmailAddress">
+                <button type="submit" class="btn" id="aUpdateEmail" data-bind="click: updateNotify"><span class="l">Notify me by e-mail</span><span class="r">&nbsp;</span></button>
+            </form>
+            <div id="divEmailStatusFrame">
+                <div id="divEmailStatus" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+                </div>
+
+
+------------------------ BUTTON VERIFICATION CODE FANS -----------------
+<button class="Button_button__PIG7R Button_accessibility_button__Zhhw_ Button_horizontal_padding__U_RFl Button_variant_primary__T0OYj"><span class="Button_truncation_not_applied__FpDSa Text_text__sJwBa">Verify code</span></button>
+
+------------------------- INPUT CODE FANS MEMBERSHIP -----------------------
+<div class="styles_input_field_wrapper__XidJ7"><svg class="styles_form_border_wrapper__S6h_m"><rect class="styles_form_border__9h6q3" width="100%" height="100%" rx="8px" fill="none" stroke-width="2px"></rect><rect class="styles_form_focus_border__1_7_N" width="100%" height="100%" rx="8px" fill="none" stroke-width="2px"></rect></svg><div class="styles_inline_input_wrapper__Hb1Le"><div class="styles_input_inner_wrapper__JAVXO"><input type="text" id="your-weverse-membership-code" placeholder="Your Weverse Membership Code" class="styles_input__cUZyj styles_has_clickable_icon__WjVlT" value=""><label for="your-weverse-membership-code" class="Text_text__sJwBa Text_variant_lowEmphasis__Kppv1">Your Weverse Membership Code</label><div data-invisible-label="__invisible_label" class="styles_invisible_label__JsTL2">Your Weverse Membership Code</div><div class="styles_right_slot_wrapper__vuTBf"><button type="button" class="styles_clickable_icon__x5xYG"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="20" height="20"><defs><path id="free-ticket-6khktc5gea" d="M21 5.972c.552 0 1 .448 1 1v4.06c-1.333 0-2 .65-2 1.95 0 1.3.667 1.978 2 2.035v3.955c0 .553-.448 1-1 1H3c-.552 0-1-.447-1-1v-3.976c1.333.01 2-.665 2-2.024 0-1.358-.667-2.038-2-2.038V6.972c0-.552.448-1 1-1h18zm-8.754 2.58c-.24-.135-.545-.05-.681.19l-1.155 2.042-2.299.467c-.089.018-.171.06-.238.122-.204.186-.218.502-.03.706l1.584 1.73-.266 2.33c-.01.09.004.182.042.264.115.251.411.362.662.248L12 15.678l2.135.973c.082.037.173.052.264.042.274-.032.471-.28.44-.554l-.266-2.33 1.585-1.73c.061-.067.103-.15.121-.238.055-.27-.12-.535-.39-.59l-2.299-.467-1.155-2.042c-.044-.08-.11-.144-.189-.19z"></path></defs><g fill="none" fill-rule="evenodd"><g transform="translate(0 -.972)"><path d="M0.323 0.972H24.323V24.972H0.323z"></path><use fill="var(--icon-color-high-emphasis)" xlink:href="#free-ticket-6khktc5gea"></use></g></g></svg></button></div></div></div></div>
+
+-------------------------- VERIFY CODE BUTTON -------------------------
+<span class="Button_truncation_not_applied__FpDSa Text_text__sJwBa">Verify your code</span>
+
+

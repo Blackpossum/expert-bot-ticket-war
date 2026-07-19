@@ -1,0 +1,17 @@
+{
+  "name": "tiket-war-bot",
+  "version": "1.0.0",
+  "description": "Automated bot for tiket.com concert ticket purchasing",
+  "main": "war.js",
+  "scripts": {
+    "setup": "node setup_session.js",
+    "war": "node war.js"
+  },
+  "keywords": ["tiket.com", "bot", "playwright"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.42.1"
+  }
+}
